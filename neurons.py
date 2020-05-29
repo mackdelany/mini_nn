@@ -6,29 +6,24 @@ class Perceptron():
         self.weights = np.random.rand(input_size, 1)
         self.bias = bias
 
-    def forward(input_vector):
-        return np.dot(self.weights, input_vector) + self.bias
-
-
-class ReLuNeuron(Perceptron):
-
-    def activate(x):
-        if x <= 0:
-            return 0
-        else :
-            return x
-
+    def forward(self, input_vector):
+        input_vector = np.array(input_vector).reshape(-1, 1)
+        return sum(self.weights * input_vector) + self.bias
 
 class BinaryNeuron(Perceptron):
 
-    def activate(x):
-        if x < 0:
-            return 0
-        else:
-            return 1
+    def activate(self, input_vector):
+        x = self.forward(input_vector)
+        return 0 if x < 0 else 1
 
+class TanHNeuron(Perceptron):
 
-class TanhNeuron(Perceptron):
-
-    def activate(x):
+    def activate(self, input_vector):
+        x = self.forward(input_vector)
         return (exp(x) - exp(-x)) / (exp(x) + exp(-x))
+
+class ReLuNeuron(Perceptron):
+
+    def activate(self, input_vector):
+        x = self.forward(input_vector)
+        return 0 if x <= 0 else x
